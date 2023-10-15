@@ -1,10 +1,11 @@
 import java.sql.Connection;
 
 import db.DB;
+import entites.Department;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Connection conn = DB.getConnection();
-        DB.closeConnection();
+        Department obj = new Department(1, "Books");
+        System.out.println(obj);
     }
 }
