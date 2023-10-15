@@ -1,11 +1,13 @@
-import java.sql.Connection;
 
-import db.DB;
+import java.sql.Date;
+
 import entites.Department;
+import entites.Seller;
 
 public class App {
     public static void main(String[] args) throws Exception {
         Department obj = new Department(1, "Books");
-        System.out.println(obj);
+        Seller seller = new Seller(21, "Bob", "Bob@gmail.com", new Date(0), 1200.0, obj);
+        System.out.println(seller);
     }
 }
