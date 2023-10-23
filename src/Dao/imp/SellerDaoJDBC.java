@@ -1,5 +1,6 @@
 package Dao.imp;
 
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,8 +76,30 @@ public class SellerDaoJDBC implements SellerDao{
     }
     @Override
     public List<Seller> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+       List<Seller> list = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(
+                "SELECT seller.*,department.Name as DepName "
+            + "FROM seller INNER JOIN department "
+            + "ON seller.DepartmentId = department.Id "
+            + "ORDER BY NAME"
+            );
+            rs = ps.executeQuery();
+            Map<Integer, Department> map = new HashMap<>();
+            while (rs.next()) {
+                Department dep = map.get(rs.getInt("DepartmentId"));
+                if (dep == null) {
+                    dep = instantiateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+                list.add(instantiateSeller(rs, dep));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return list;
     }
     private Department instantiateDepartment(ResultSet rs) throws SQLException { 
         Department dep = null;
