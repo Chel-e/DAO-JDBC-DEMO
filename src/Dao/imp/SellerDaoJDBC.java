@@ -22,9 +22,33 @@ public class SellerDaoJDBC implements SellerDao{
         this.conn = conn;
     }
     @Override
-    public void nsert(Seller obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nsert'");
+    public void insert(Seller obj) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement("INSERT INTO seller "
+            + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+            + "VALUES "
+            + "(?, ?, ?, ?, ?)", java.sql.Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, obj.getName());
+            st.setString(2, obj.getEmail());
+            st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDouble(4, obj.getBaseSalary());
+            st.setInt(5, obj.getDepartment().getId());
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0 ) {
+                rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
+                }
+            } else { 
+                throw new DbException("Eroor, no rows affected");
+        }
+
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
@@ -58,7 +82,7 @@ public class SellerDaoJDBC implements SellerDao{
             }
             return null;
         } catch (SQLException e) {
-        throw new DbException(e.getMessage());
+            throw new DbException(e.getMessage());
        }
 
     }
