@@ -25,8 +25,10 @@ public class App {
         Seller seller2 = new Seller(null, "Emme", "Emme@gmail.com", new Date(), 1200.00, dep);
         sellerDao.insert(seller2);
         System.out.println("\n=== Update test ===");
-        Seller seller3 = new Seller(4, "Eve", "Eve@gmail.com", new Date(), 6200.00, dep);
+        Seller seller3 = new Seller(3, "Eve", "Eve@gmail.com", new Date(), 6200.00, dep);
         sellerDao.update(seller3);
+        System.out.println("\n=== Delete test ===");
+        sellerDao.deleteById(seller3.getId());
         System.out.println("\n=== FindAll test ===");
         List<Seller> listAll = new ArrayList<>();
         listAll = sellerDao.findAll();
