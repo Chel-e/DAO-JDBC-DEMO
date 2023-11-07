@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import Dao.DaoFactory;
+import Dao.DepartmentDao;
 import Dao.SellerDao;
 import entites.Department;
 import entites.Seller;
@@ -35,5 +36,34 @@ public class App {
         for (Seller obj : listAll) {
             System.out.println(obj);
         }
+        System.out.println("======= Department Test =======");
+        DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+        System.out.println("\n=== TEST 1: insert =======");
+		Department newDepartment = new Department(null, "Music");
+		departmentDao.insert(newDepartment);
+		System.out.println("Inserted! New id: " + newDepartment.getId());
+    
+        System.out.println("=== TEST 2: findById =======");
+		Department Dep = departmentDao.findById(1);
+		System.out.println(Dep);
+
+        System.out.println("\n=== TEST 3: update =======");
+		Department dep2 = departmentDao.findById(1);
+		dep2.setName("Food");
+		departmentDao.update(dep2);
+		System.out.println("Update completed");
+        
+        System.out.println("\n=== TEST 4: delete =======");
+		System.out.print("Enter id for delete test: ");
+		int id = 7;
+		departmentDao.deleteById(id);
+		System.out.println("Delete completed");
+
+		System.out.println("\n=== TEST 5: findAll =======");
+		List<Department> List = departmentDao.findAll();
+		for (Department d : List) {
+			System.out.println(d);
+		}
+
     }
 }
